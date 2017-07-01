@@ -1,0 +1,49 @@
+
+= Reproducible Maven Builds
+
+== Background
+
+* Products with long term support
+* Many open source components from outside our org.
+** Pushing 3rd party binaries to the customers, anyone?
+*** Not a good idea because of the commitment to be able to fix, build and deliver the components over a long period of time
+* We test and deliver only bits built by ourselves
+** Controlled env. (OS, Java, build tool), offline, ...
+** Called Productization, BTW
+
+== The magic of building 3rd party code
+
+* Getting the sources easy
+* Some effort needed to learn how to build
+* But in the end, how do I know that I am building correctly?
+  -> Compare my binaries with their binaries
+  (one possible method)
+
+
+== Well... _compare_?
+
+Bitwise (a.k.a. binary) comparison
+
+* If theirs and mine artifacts are binary equal, job done, I am building correctly
+* If non equal, what I am doing wrong?
+
+
+== Look deeper into the nature of the diffs
+
+=== Time
+
+`.zip`, `.jar`, `.war`, `.ear`, `.tgz`, ...
+
+* Archive entries typically marked with a timestamp equal to the build time
+* Archiving at different time leads to different archives
+
+
+=== Env.
+
+* By default, Assembly plugin writes the current user to `meta-inf/manifest.mf` of `.jar` like artifacts
+
+
+=== Generated Code
+
+* Collections with non deterministic ordering, such as `HashMap/Set` used in the generating code
+
